@@ -11,7 +11,6 @@ import java.util.Random;
 class TapImp extends GameObject
 {
     //Animation
-    private static final int COLS = 8, ROWS = 1;
     private Animation<TextureRegion> idleAnim;
     private Texture idleSheet;
     private float stateTime;
@@ -20,20 +19,13 @@ class TapImp extends GameObject
     private long popTime;
     private long deathTime;
     private boolean popped = false;
+    private boolean bopped = false;
     private Random r;
 
     TapImp(int x, int y)
     {
         super(x,y);
-        idleSheet = new Texture("idleimp.png");
-        TextureRegion[][] tmp = TextureRegion.split(idleSheet,idleSheet.getWidth()/COLS,idleSheet.getHeight()/ROWS);
-        TextureRegion[] idleFrames = new TextureRegion[COLS*ROWS];
-        int index = 0;
-        for(int i = 0;i<ROWS;i++)
-            for(int j = 0;j<COLS;j++)
-                idleFrames[index++] = tmp[i][j];
-        idleAnim = new Animation<TextureRegion>(0.10f,idleFrames);
-        stateTime = 0f;
+        setAnim("impspawn.png",16,1,0.066f);
         r = new Random();
         deathTime = System.currentTimeMillis();
     }
@@ -46,6 +38,7 @@ class TapImp extends GameObject
             if((random > 666&& random <690)&&time-deathTime>333)
             {
                 popTime = time;
+                stateTime = 0f;
                 popped = true;
             }
         }
@@ -71,7 +64,7 @@ class TapImp extends GameObject
     void draw(SpriteBatch batch,float delta)
     {
         stateTime += delta;
-        TextureRegion currentFrame = idleAnim.getKeyFrame(stateTime, true);
+        TextureRegion currentFrame = idleAnim.getKeyFrame(stateTime, false);
         if(popped)
             batch.draw(currentFrame,getX(),getY(),160,130);
     }
@@ -84,6 +77,20 @@ class TapImp extends GameObject
     private void kill()
     {
         Gdx.app.log("Test","Tapped imp: "+getX()+","+getY());
+        TapImpGame.score++;
         popped = false;
+    }
+
+    private void setAnim(String name, int cols, int rows,float time)
+    {
+        idleSheet = new Texture(name);
+        TextureRegion[][] tmp = TextureRegion.split(idleSheet,idleSheet.getWidth()/cols,idleSheet.getHeight()/rows);
+        TextureRegion[] idleFrames = new TextureRegion[cols*rows];
+        int index = 0;
+        for(int i = 0;i<rows;i++)
+            for(int j = 0;j<cols;j++)
+                idleFrames[index++] = tmp[i][j];
+        idleAnim = new Animation<TextureRegion>(time,idleFrames);
+        stateTime = 0f;
     }
 }
