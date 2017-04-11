@@ -52,7 +52,6 @@ class TapImp extends GameObject
         }
     }
 
-
     void touchUpdate(Vector3 input)
     {
         if(popped)
@@ -77,7 +76,7 @@ class TapImp extends GameObject
     private void kill()
     {
         Gdx.app.log("Test","Tapped imp: "+getX()+","+getY());
-        TapImpGame.score++;
+        gameEntry.TAP_AN_IMP_SCORE++;
         popped = false;
     }
 
