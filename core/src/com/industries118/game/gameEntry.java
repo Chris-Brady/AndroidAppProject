@@ -10,6 +10,9 @@ class gameEntry extends Game
 
     SpriteBatch batch;
     BitmapFont font;
+
+
+
     OrthographicCamera camera;
     static int TAP_AN_IMP_SCORE;
     static final int WIDTH = 400, HEIGHT = 800;

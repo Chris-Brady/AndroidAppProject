@@ -2,26 +2,28 @@ package com.industries118.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class MainMenu implements Screen
 {
     final gameEntry game;
-    private DBManager d;
+    private CustomFont mFont, sFont;
 
     public MainMenu(final gameEntry game)
     {
         this.game = game;
         game.camera = new OrthographicCamera();
         game.camera.setToOrtho(false,gameEntry.WIDTH,gameEntry.HEIGHT);
-        d = new DBManager("sql8.freemysqlhosting.net", "sql8168796","YBc1vI7kqn","3306","arcadeTAI");
+        mFont = new CustomFont("BLOODY.TTF",40, Color.YELLOW);
+        sFont = new CustomFont("BLOODY.TTF",20, Color.YELLOW);
     }
 
     @Override
     public void show()
     {
-        d.connect();
+
     }
 
     @Override
@@ -32,10 +34,9 @@ public class MainMenu implements Screen
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
         game.batch.begin();
-        game.font.draw(game.batch,"Welcome to game",20,180);
-        game.font.draw(game.batch,"Tap to begin!",20,160);
+        mFont.draw(game.batch,"ARCADE",(gameEntry.WIDTH/2)-(mFont.getWidth()/2),500);
+        sFont.draw(game.batch,"Tap to play!",(gameEntry.WIDTH/2)-(sFont.getWidth()/2),450);
         game.batch.end();
-
         if(Gdx.input.isTouched())
         {
             game.setScreen(new TapImpGame(game));
@@ -70,6 +71,7 @@ public class MainMenu implements Screen
     @Override
     public void dispose()
     {
-
+        mFont.dispose();
+        sFont.dispose();
     }
 }

@@ -2,10 +2,10 @@ package com.industries118.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -16,7 +16,9 @@ class TapImpGame implements Screen
 	private ArrayList<GameObject> gameObjects;
 	private Vector3 touchInput;
 	private Texture bg;
-	private BitmapFont font;
+	private CustomFont mFont,sFont;
+
+
 	private boolean running;
 	private int timeLeft;
 	private long time;
@@ -32,7 +34,8 @@ class TapImpGame implements Screen
 		game.camera.setToOrtho(false,gameEntry.WIDTH,gameEntry.HEIGHT);
 		gameObjects = new ArrayList<GameObject>();
 		touchInput = new Vector3(0,0,0);
-		font = new BitmapFont();
+		mFont = new CustomFont("BLOODY.TTF",24, Color.YELLOW);
+		sFont = new CustomFont("LCD2 Bold.ttf",40, Color.YELLOW);
 		bg = new Texture("floor.png");
 		createImpArray(gameObjects,gameEntry.WIDTH, gameEntry.HEIGHT, 3,3);
 		timeLeft = 30000;
@@ -61,8 +64,10 @@ class TapImpGame implements Screen
 			game.batch.setProjectionMatrix(game.camera.combined);
 			game.batch.begin();
 			game.batch.draw(bg, 0, 0, gameEntry.WIDTH, gameEntry.HEIGHT);
-			game.font.draw(game.batch, "Score: " + gameEntry.TAP_AN_IMP_SCORE, 20, gameEntry.HEIGHT - 20);
-			game.font.draw(game.batch, "Time: " + (timeLeft), gameEntry.WIDTH / 2, gameEntry.HEIGHT - 20);
+			mFont.draw(game.batch,"Score: "+gameEntry.TAP_AN_IMP_SCORE,(gameEntry.WIDTH/2)-(mFont.getWidth()/2),gameEntry.HEIGHT-60);
+			sFont.draw(game.batch,"Time: "+(timeLeft),(gameEntry.WIDTH/2)-(sFont.getWidth()/2),gameEntry.HEIGHT-24);
+
+
 			for (GameObject g : gameObjects)
 			{
 				g.update(time);
@@ -79,8 +84,8 @@ class TapImpGame implements Screen
 		}
 		else
 		{
-			dispose();
 			game.setScreen(new LeaderBoard(game, gameEntry.TAP_AN_IMP_SCORE));
+			dispose();
 		}
 	}
 
@@ -113,7 +118,8 @@ class TapImpGame implements Screen
 	public void dispose ()
 	{
 		bg.dispose();
-		font.dispose();
+		mFont.dispose();
+		sFont.dispose();
 		for(GameObject g:gameObjects)
 			g.dispose();
 	}
