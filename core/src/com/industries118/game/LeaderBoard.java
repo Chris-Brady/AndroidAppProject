@@ -4,6 +4,16 @@ import com.badlogic.gdx.Screen;
 
 public class LeaderBoard implements Screen
 {
+    private gameEntry game;
+    int scoreToAdd;
+    private DBManager d;
+    LeaderBoard(final gameEntry game, int score)
+    {
+        this.game = game;
+        scoreToAdd = score;
+        d = new DBManager("sql8.freemysqlhosting.net", "sql8168796","YBc1vI7kqn","3306","arcadeTAI");
+    }
+
     @Override
     public void show()
     {

@@ -8,18 +8,20 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 public class MainMenu implements Screen
 {
     final gameEntry game;
+    private DBManager d;
 
     public MainMenu(final gameEntry game)
     {
         this.game = game;
         game.camera = new OrthographicCamera();
-        game.camera.setToOrtho(false,400,800);
+        game.camera.setToOrtho(false,gameEntry.WIDTH,gameEntry.HEIGHT);
+        d = new DBManager("sql8.freemysqlhosting.net", "sql8168796","YBc1vI7kqn","3306","arcadeTAI");
     }
 
     @Override
     public void show()
     {
-
+        d.connect();
     }
 
     @Override

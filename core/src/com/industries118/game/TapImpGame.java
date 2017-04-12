@@ -6,40 +6,38 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
 class TapImpGame implements Screen
 {
-	private static final int WIDTH = 400, HEIGHT = 800;
 	private gameEntry game;
 	private ArrayList<GameObject> gameObjects;
-	private SpriteBatch batch;
-	private OrthographicCamera camera;
-	private long time;
 	private Vector3 touchInput;
 	private Texture bg;
 	private BitmapFont font;
 	private boolean running;
-	private long startTime;
 	private int timeLeft;
+	private long time;
+	private long startTime;
+	private long timeOffset;
+	private long timePaused;
 
 	TapImpGame(final gameEntry game)
 	{
 		this.game = game;
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false,WIDTH,HEIGHT);
-		batch = new SpriteBatch(16);
-		gameObjects = new ArrayList<GameObject>();
-		bg = new Texture("floor.png");
-		touchInput = new Vector3(0,0,0);
-		createImpArray(gameObjects,WIDTH, HEIGHT, 3,3);
-		font = new BitmapFont();
-		startTime = System.currentTimeMillis();
-		timeLeft = 30000;
 		gameEntry.TAP_AN_IMP_SCORE = 0;
+		game.camera = new OrthographicCamera();
+		game.camera.setToOrtho(false,gameEntry.WIDTH,gameEntry.HEIGHT);
+		gameObjects = new ArrayList<GameObject>();
+		touchInput = new Vector3(0,0,0);
+		font = new BitmapFont();
+		bg = new Texture("floor.png");
+		createImpArray(gameObjects,gameEntry.WIDTH, gameEntry.HEIGHT, 3,3);
+		timeLeft = 30000;
+		timeOffset = 0;
+		startTime = System.currentTimeMillis();
 		running = true;
 	}
 
@@ -54,17 +52,17 @@ class TapImpGame implements Screen
 	{
 		if(running&&timeLeft >=0)
 		{
-			time = System.currentTimeMillis();
+			time = System.currentTimeMillis()-timeOffset;
 			delta = Gdx.graphics.getDeltaTime();
 			timeLeft = 30 - (int) (time - startTime) / 1000;
 			Gdx.gl.glClearColor(1, 0, 0, 1);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-			camera.update();
-			batch.setProjectionMatrix(camera.combined);
-			batch.begin();
-			batch.draw(bg, 0, 0, 400, 800);
-			font.draw(batch, "Score: " + gameEntry.TAP_AN_IMP_SCORE, 20, HEIGHT - 20);
-			font.draw(batch, "Time: " + (timeLeft), WIDTH / 2, HEIGHT - 20);
+			game.camera.update();
+			game.batch.setProjectionMatrix(game.camera.combined);
+			game.batch.begin();
+			game.batch.draw(bg, 0, 0, gameEntry.WIDTH, gameEntry.HEIGHT);
+			game.font.draw(game.batch, "Score: " + gameEntry.TAP_AN_IMP_SCORE, 20, gameEntry.HEIGHT - 20);
+			game.font.draw(game.batch, "Time: " + (timeLeft), gameEntry.WIDTH / 2, gameEntry.HEIGHT - 20);
 			for (GameObject g : gameObjects)
 			{
 				g.update(time);
@@ -72,17 +70,17 @@ class TapImpGame implements Screen
 					if (Gdx.input.isTouched())
 					{
 						touchInput = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-						camera.unproject(touchInput);
+						game.camera.unproject(touchInput);
 						((TapImp) g).touchUpdate(touchInput);
 					}
-				g.draw(batch, delta);
+				g.draw(game.batch, delta);
 			}
-			batch.end();
+			game.batch.end();
 		}
 		else
 		{
-			game.setScreen(new MainMenu(game));
 			dispose();
+			game.setScreen(new LeaderBoard(game, gameEntry.TAP_AN_IMP_SCORE));
 		}
 	}
 
@@ -95,13 +93,14 @@ class TapImpGame implements Screen
 	@Override
 	public void pause()
 	{
-
+		if(running)
+			timePaused = System.currentTimeMillis();
 	}
 
 	@Override
 	public void resume()
 	{
-
+		timeOffset += System.currentTimeMillis()-timePaused;
 	}
 
 	@Override
@@ -113,10 +112,8 @@ class TapImpGame implements Screen
 	@Override
 	public void dispose ()
 	{
-		batch.dispose();
 		bg.dispose();
 		font.dispose();
-
 		for(GameObject g:gameObjects)
 			g.dispose();
 	}

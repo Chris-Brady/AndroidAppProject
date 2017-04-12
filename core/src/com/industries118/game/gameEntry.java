@@ -12,6 +12,7 @@ class gameEntry extends Game
     BitmapFont font;
     OrthographicCamera camera;
     static int TAP_AN_IMP_SCORE;
+    static final int WIDTH = 400, HEIGHT = 800;
 
     @Override
     public void create()

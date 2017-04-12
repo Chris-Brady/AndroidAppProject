@@ -1,1 +1,1 @@
-include 'android', 'core'
+include 'android', 'core', ':mysql-connector-java-5.1.41-bin'
