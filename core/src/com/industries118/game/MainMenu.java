@@ -2,6 +2,7 @@ package com.industries118.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,12 +13,16 @@ public class MainMenu implements Screen
     final gameEntry game;
     private CustomFont mFont, sFont;
     private Texture bg;
+    private Music music;
 
     public MainMenu(final gameEntry game)
     {
         this.game = game;
         game.camera = new OrthographicCamera();
         game.camera.setToOrtho(false,gameEntry.WIDTH,gameEntry.HEIGHT);
+        music = Gdx.audio.newMusic(Gdx.files.internal("sfx/boomrock.ogg"));
+        music.play();
+        music.setLooping(true);
         mFont = new CustomFont("BLOODY.TTF",40, Color.YELLOW);
         sFont = new CustomFont("BLOODY.TTF",20, Color.YELLOW);
         bg = new Texture("boomarcade.png");
@@ -40,6 +45,7 @@ public class MainMenu implements Screen
         if(Gdx.input.isTouched())
         {
             game.setScreen(new SplashScreen("taisplash.png",new TapImpGame(game),game));
+            music.pause();
             dispose();
         }
     }
@@ -53,19 +59,19 @@ public class MainMenu implements Screen
     @Override
     public void pause()
     {
-
+        music.pause();
     }
 
     @Override
     public void resume()
     {
-
+        music.play();
     }
 
     @Override
     public void hide()
     {
-
+        music.stop();
     }
 
     @Override
@@ -73,6 +79,7 @@ public class MainMenu implements Screen
     {
         mFont.dispose();
         sFont.dispose();
+        music.dispose();
         bg.dispose();
     }
 }

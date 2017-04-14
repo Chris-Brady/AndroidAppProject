@@ -2,6 +2,7 @@ package com.industries118.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,7 +17,7 @@ class TapImpGame implements Screen
 	private Vector3 touchInput;
 	private Texture bg;
 	private CustomFont mFont,sFont;
-
+	private Music music;
 
 	private boolean running;
 	private int timeLeft;
@@ -36,7 +37,11 @@ class TapImpGame implements Screen
 		mFont = new CustomFont("BLOODY.TTF",24, Color.YELLOW);
 		sFont = new CustomFont("LCD2 Bold.ttf",40, Color.YELLOW);
 		bg = new Texture("floor.png");
+		music = Gdx.audio.newMusic(Gdx.files.internal("sfx/headshredder.ogg"));
+		music.play();
+		music.setLooping(true);
 		createImpArray(gameObjects,gameEntry.WIDTH, gameEntry.HEIGHT, 3,3);
+		time = 0;
 		timeLeft = 30000;
 		timeOffset = 0;
 		running = false;
@@ -83,6 +88,8 @@ class TapImpGame implements Screen
 			game.setScreen(new LeaderBoard(game, gameEntry.TAP_AN_IMP_SCORE, "arcadeTAI"));
 			dispose();
 		}
+		if(timeLeft<=5&&music.isPlaying()&&music.getVolume()>0)
+			music.setVolume(music.getVolume()-delta*0.1f);
 	}
 
 	@Override
@@ -98,6 +105,7 @@ class TapImpGame implements Screen
 		{
 			timePaused = System.currentTimeMillis();
 			running = false;
+			music.pause();
 		}
 	}
 
@@ -106,12 +114,13 @@ class TapImpGame implements Screen
 	{
 		timeOffset += System.currentTimeMillis()-timePaused;
 		running = true;
+		music.play();
 	}
 
 	@Override
 	public void hide()
 	{
-
+		music.stop();
 	}
 
 	@Override
@@ -120,11 +129,12 @@ class TapImpGame implements Screen
 		bg.dispose();
 		mFont.dispose();
 		sFont.dispose();
+		music.dispose();
 		for(GameObject g:gameObjects)
 			g.dispose();
 	}
 
-	private void createImpArray(ArrayList a, int w, int h, int r, int c)
+	private void createImpArray(ArrayList<GameObject> a, int w, int h, int r, int c)
 	{
 		int wSpace = w/r;
 		int hSpace = (h/c)/2;

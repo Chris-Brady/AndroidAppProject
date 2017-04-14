@@ -1,5 +1,6 @@
 package com.industries118.game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,8 +20,11 @@ class TapImp extends GameObject
     private long popTime;
     private long deathTime;
     private boolean popped = false;
-    private boolean bopped = false;
     private Random r;
+
+    //Sfx
+    private Sound impPop;
+    private Sound score;
 
     TapImp(int x, int y)
     {
@@ -28,6 +32,8 @@ class TapImp extends GameObject
         setAnim("impspawn.png",16,1,0.066f);
         r = new Random();
         deathTime = System.currentTimeMillis();
+        impPop = Gdx.audio.newSound(Gdx.files.internal("sfx/imppop.ogg"));
+        score = Gdx.audio.newSound(Gdx.files.internal("sfx/score.ogg"));
     }
 
     void update(long time)
@@ -37,6 +43,7 @@ class TapImp extends GameObject
             int random = r.nextInt(1000);
             if((random > 666&& random <690)&&time-deathTime>333)
             {
+                impPop.play(0.2f);
                 popTime = time;
                 stateTime = 0f;
                 popped = true;
@@ -70,11 +77,15 @@ class TapImp extends GameObject
 
     void dispose()
     {
+
         idleSheet.dispose();
+        impPop.dispose();
+        score.dispose();
     }
 
     private void kill()
     {
+        score.play(1.0f);
         gameEntry.TAP_AN_IMP_SCORE++;
         popped = false;
     }
