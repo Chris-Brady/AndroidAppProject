@@ -75,7 +75,6 @@ class TapImp extends GameObject
 
     private void kill()
     {
-        Gdx.app.log("Test","Tapped imp: "+getX()+","+getY());
         gameEntry.TAP_AN_IMP_SCORE++;
         popped = false;
     }

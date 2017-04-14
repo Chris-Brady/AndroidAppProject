@@ -2,9 +2,9 @@ package com.industries118.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 class CustomFont
@@ -24,7 +24,7 @@ class CustomFont
         glyphLayout = new GlyphLayout();
     }
 
-    void draw(SpriteBatch batch,String text,int x,int y)
+    void draw(Batch batch, String text, int x, int y)
     {
         glyphLayout.setText(font,text);
         font.draw(batch,glyphLayout,x,y);
@@ -34,6 +34,11 @@ class CustomFont
     {
         generator.dispose();
         font.dispose();
+    }
+
+    public BitmapFont getFont()
+    {
+        return font;
     }
 
     int getWidth()

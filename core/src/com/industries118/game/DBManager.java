@@ -2,65 +2,72 @@ package com.industries118.game;
 
 import com.badlogic.gdx.Gdx;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-public class DBManager
+public class DBManager extends Thread
 {
-    private Connection con;
-    private Statement st;
-    private ResultSet rs;
+    private boolean done;
+    private String result;
+    private String name;
+    private int score;
+    private String tableName;
 
-    private String server;
-    private String user;
-    private String pass;
-    private String port;
-    private String database;
-
-    DBManager(String server,String user,String pass,String port,String database)
+    DBManager(String name,int score,String tableName)
     {
-        this.user = user;
-        this.pass = pass;
-        this.port = port;
-        this.database = database;
-        this.server = "jdbc:mysql://"+server+":"+port+"/";
+        done = false;
+        this.tableName = tableName;
+        this.name = name;
+        this.score = score;
     }
 
-    public void connect()
+    public void run()
     {
         try
         {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(server, user, pass);
-            st = con.createStatement();
-            rs = st.executeQuery("SELECT * FROM arcadeTAI;");
+            URL url = new URL("http://industries118.x10host.com/android_api/run.php?table="
+                                +tableName+"&name="+name+"&score="+score);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
+            result = readStream(in);
+            connection.disconnect();
+            done = true;
+        }
+        catch (Exception e)
+        {
+            result = "[{\"Name\":\"No Results\",\"Score\":\"0\",\"Date\":\"null\"}]";
+        }
+    }
 
-            if (rs.next())
-            {//get first result
-                Gdx.app.log("DBM",rs.getString(1));
+    boolean getStatus()
+    {
+        return done;
+    }
+
+    public String getInfo()
+    {
+        return result;
+    }
+
+    private String readStream(InputStream inputStream) {
+        try
+        {
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            int byteRead = inputStream.read();
+            while (byteRead != -1)
+            {
+                bo.write(byteRead);
+                byteRead = inputStream.read();
             }
-
+            return bo.toString(); // return string that was read.
         }
-        catch (SQLException ex)
+        catch (IOException e)
         {
-
+            return "[{\"Name\":\"No Results\",\"Score\":\"0\",\"Date\":\"null\"}]";
         }
-        catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    public void getInfo()
-    {
-
-    }
-
-    public void setInfo()
-    {
-
     }
 }

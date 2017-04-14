@@ -5,11 +5,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 
 public class MainMenu implements Screen
 {
     final gameEntry game;
     private CustomFont mFont, sFont;
+    private Texture bg;
 
     public MainMenu(final gameEntry game)
     {
@@ -18,6 +20,7 @@ public class MainMenu implements Screen
         game.camera.setToOrtho(false,gameEntry.WIDTH,gameEntry.HEIGHT);
         mFont = new CustomFont("BLOODY.TTF",40, Color.YELLOW);
         sFont = new CustomFont("BLOODY.TTF",20, Color.YELLOW);
+        bg = new Texture("boomarcade.png");
     }
 
     @Override
@@ -29,17 +32,14 @@ public class MainMenu implements Screen
     @Override
     public void render(float delta)
     {
-        Gdx.gl.glClearColor(0.5f,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        game.camera.update();
-        game.batch.setProjectionMatrix(game.camera.combined);
+        game.setCameraBits();
         game.batch.begin();
-        mFont.draw(game.batch,"ARCADE",(gameEntry.WIDTH/2)-(mFont.getWidth()/2),500);
-        sFont.draw(game.batch,"Tap to play!",(gameEntry.WIDTH/2)-(sFont.getWidth()/2),450);
+        game.batch.draw(bg,0,0,gameEntry.WIDTH,gameEntry.HEIGHT);
+        sFont.draw(game.batch,"Tap to play!",(gameEntry.WIDTH/2)-(sFont.getWidth()/2),300);
         game.batch.end();
         if(Gdx.input.isTouched())
         {
-            game.setScreen(new TapImpGame(game));
+            game.setScreen(new SplashScreen("taisplash.png",new TapImpGame(game),game));
             dispose();
         }
     }
@@ -73,5 +73,6 @@ public class MainMenu implements Screen
     {
         mFont.dispose();
         sFont.dispose();
+        bg.dispose();
     }
 }

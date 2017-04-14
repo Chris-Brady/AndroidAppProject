@@ -3,7 +3,6 @@ package com.industries118.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
@@ -40,14 +39,14 @@ class TapImpGame implements Screen
 		createImpArray(gameObjects,gameEntry.WIDTH, gameEntry.HEIGHT, 3,3);
 		timeLeft = 30000;
 		timeOffset = 0;
-		startTime = System.currentTimeMillis();
-		running = true;
+		running = false;
 	}
 
 	@Override
 	public void show ()
 	{
-
+		startTime = System.currentTimeMillis();
+		running = true;
 	}
 
 	@Override
@@ -58,10 +57,7 @@ class TapImpGame implements Screen
 			time = System.currentTimeMillis()-timeOffset;
 			delta = Gdx.graphics.getDeltaTime();
 			timeLeft = 30 - (int) (time - startTime) / 1000;
-			Gdx.gl.glClearColor(1, 0, 0, 1);
-			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-			game.camera.update();
-			game.batch.setProjectionMatrix(game.camera.combined);
+			game.setCameraBits();
 			game.batch.begin();
 			game.batch.draw(bg, 0, 0, gameEntry.WIDTH, gameEntry.HEIGHT);
 			mFont.draw(game.batch,"Score: "+gameEntry.TAP_AN_IMP_SCORE,(gameEntry.WIDTH/2)-(mFont.getWidth()/2),gameEntry.HEIGHT-60);
@@ -82,9 +78,9 @@ class TapImpGame implements Screen
 			}
 			game.batch.end();
 		}
-		else
+		else if(timeLeft<=0)
 		{
-			game.setScreen(new LeaderBoard(game, gameEntry.TAP_AN_IMP_SCORE));
+			game.setScreen(new LeaderBoard(game, gameEntry.TAP_AN_IMP_SCORE, "arcadeTAI"));
 			dispose();
 		}
 	}
@@ -99,13 +95,17 @@ class TapImpGame implements Screen
 	public void pause()
 	{
 		if(running)
+		{
 			timePaused = System.currentTimeMillis();
+			running = false;
+		}
 	}
 
 	@Override
 	public void resume()
 	{
 		timeOffset += System.currentTimeMillis()-timePaused;
+		running = true;
 	}
 
 	@Override
