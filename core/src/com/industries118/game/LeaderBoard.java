@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-public class LeaderBoard implements Screen
+class LeaderBoard implements Screen
 {
     private gameEntry game;
     private CustomFont mFont,sFont;
@@ -21,7 +21,6 @@ public class LeaderBoard implements Screen
     //UI
     private Stage stage;
     private TextField tf;
-    private TextButton tb;
     private Texture bg;
 
     LeaderBoard(final gameEntry game, final int score, final String tableName)
@@ -45,7 +44,7 @@ public class LeaderBoard implements Screen
         stage.setKeyboardFocus(tf);
         tf.getOnscreenKeyboard().show(true);
 
-        tb = new TextButton("Upload Score!", skin);
+        TextButton tb = new TextButton("Upload Score!", skin);
         tb.setSize(300,30);
         tb.setPosition((gameEntry.WIDTH/2-(tb.getWidth()/2)),gameEntry.HEIGHT/2-(tf.getHeight()*2));
         tb.addListener(new ClickListener(){

@@ -70,7 +70,7 @@ class TapImp extends GameObject
     void draw(SpriteBatch batch,float delta)
     {
         stateTime += delta;
-        TextureRegion currentFrame = idleAnim.getKeyFrame(stateTime, false);
+        TextureRegion currentFrame = idleAnim.getKeyFrame(stateTime, true);
         if(popped)
             batch.draw(currentFrame,getX(),getY(),160,130);
     }
@@ -101,5 +101,10 @@ class TapImp extends GameObject
                 idleFrames[index++] = tmp[i][j];
         idleAnim = new Animation<TextureRegion>(time,idleFrames);
         stateTime = 0f;
+    }
+
+    void setPopped(boolean popped)
+    {
+        this.popped = popped;
     }
 }

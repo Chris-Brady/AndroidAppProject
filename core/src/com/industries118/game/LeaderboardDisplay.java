@@ -89,7 +89,7 @@ class LeaderboardDisplay implements Screen
                 Score[] scores = gson.fromJson(result, Score[].class);
                 for(int i = 0; i< scores.length; i++)
                 {
-                    Label num = new Label(i+"",skin);
+                    Label num = new Label(i+1+"",skin);
                     Label Name = new Label(scores[i].getName(),skin);
                     Label Score = new Label(scores[i].getScore(),skin);
                     Label Date = new Label(scores[i].getDate(),skin);
