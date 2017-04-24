@@ -1,7 +1,5 @@
 package com.industries118.game;
 
-import com.badlogic.gdx.Gdx;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,24 +11,26 @@ public class DBManager extends Thread
 {
     private boolean done;
     private String result;
-    private String name;
-    private int score;
-    private String tableName;
+    private String url;
+
+    DBManager()
+    {
+        done = false;
+        this.url = "http://industries118.x10host.com/android_api/results.php";
+    }
 
     DBManager(String name,int score,String tableName)
     {
         done = false;
-        this.tableName = tableName;
-        this.name = name;
-        this.score = score;
+        this.url = "http://industries118.x10host.com/android_api/run.php?table="
+                +tableName+"&name="+name+"&score="+score;
     }
 
     public void run()
     {
         try
         {
-            URL url = new URL("http://industries118.x10host.com/android_api/run.php?table="
-                                +tableName+"&name="+name+"&score="+score);
+            URL url = new URL(this.url);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
             result = readStream(in);

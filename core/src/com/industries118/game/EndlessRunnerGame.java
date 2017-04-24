@@ -6,17 +6,16 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-class EndlessRunnerGame implements Screen
+class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
 {
     private gameEntry game;
     private ArrayList<GameObject> gameObjects;
-    private ArrayList<GameObject> garbage;
-    private Vector3 touchInput;
     private Texture bg;
     private CustomFont mFont;
 
@@ -25,6 +24,7 @@ class EndlessRunnerGame implements Screen
     private long timePaused;
     private long last;
     private Random r;
+    private int playerPosition;
 
     private Music music;
     private int dx = 100;
@@ -45,9 +45,14 @@ class EndlessRunnerGame implements Screen
         music.setLooping(true);
         r = new Random();
         last = System.currentTimeMillis();
+        gameObjects.add(new Player(gameEntry.WIDTH/2,50,0.1f));
+        Gdx.input.setInputProcessor(new GestureDetector(this));
+        playerPosition = 2;
     }
+
     @Override
-    public void show() {
+    public void show()
+    {
 
     }
 
@@ -55,12 +60,6 @@ class EndlessRunnerGame implements Screen
     public void render(float delta)
     {
         time = System.currentTimeMillis()-timeOffset;
-        if(time-last>=3000)
-        {
-            last = time;
-            //int place = r.nextInt(3);
-            gameObjects.add(new TapImp(0,gameEntry.HEIGHT));
-        }
         if(d<-gameEntry.HEIGHT)
         {
             d = 0;
@@ -71,20 +70,15 @@ class EndlessRunnerGame implements Screen
             d-=dx*delta;
         game.setCameraBits();
         game.batch.begin();
-        game.batch.draw(bg, 0, gameEntry.HEIGHT+d, gameEntry.WIDTH, gameEntry.HEIGHT);
+        game.batch.draw(bg, 0, gameEntry.HEIGHT+d, gameEntry.WIDTH/4, gameEntry.HEIGHT/4);
         game.batch.draw(bg, 0, d, gameEntry.WIDTH, gameEntry.HEIGHT);
-        for (GameObject g : gameObjects)
+        for(GameObject g: gameObjects)
         {
-            if(g instanceof TapImp)
+            if(g instanceof Player)
             {
-                g.setY((int)(g.getY()-(dx*delta)));
-                ((TapImp) g).setPopped(true);
-                if(g.getY()<-100)
-                {
-
-                }
+                g.setX(playerPosition*(gameEntry.WIDTH/4));
             }
-            g.draw(game.batch, delta);
+            g.draw(game.batch,delta);
         }
         game.batch.end();
     }
@@ -115,5 +109,65 @@ class EndlessRunnerGame implements Screen
     {
         bg.dispose();
         music.dispose();
+    }
+
+    @Override
+    public boolean touchDown(float x, float y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean tap(float x, float y, int count, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean longPress(float x, float y) {
+        return false;
+    }
+
+    @Override
+    public boolean fling(float velocityX, float velocityY, int button)
+    {
+        if(Math.abs(velocityX)>Math.abs(velocityY)){
+            if(velocityX>0)
+            {
+               Gdx.app.log("Swipe","Right");
+                if(playerPosition<3)
+                    playerPosition++;
+            }
+            else
+            {
+                Gdx.app.log("Swipe","Left");
+                if(playerPosition>1)
+                    playerPosition--;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean pan(float x, float y, float deltaX, float deltaY) {
+        return false;
+    }
+
+    @Override
+    public boolean panStop(float x, float y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean zoom(float initialDistance, float distance) {
+        return false;
+    }
+
+    @Override
+    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+        return false;
+    }
+
+    @Override
+    public void pinchStop() {
+
     }
 }

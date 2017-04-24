@@ -11,11 +11,6 @@ import java.util.Random;
 
 class TapImp extends GameObject
 {
-    //Animation
-    private Animation<TextureRegion> idleAnim;
-    private Texture idleSheet;
-    private float stateTime;
-
     //GameLogic
     private long popTime;
     private long deathTime;
@@ -26,7 +21,7 @@ class TapImp extends GameObject
     private Sound impPop;
     private Sound score;
 
-    TapImp(int x, int y)
+    TapImp(float x, float y)
     {
         super(x,y);
         setAnim("impspawn.png",16,1,0.066f);
@@ -67,6 +62,7 @@ class TapImp extends GameObject
                     kill();
     }
 
+    @Override
     void draw(SpriteBatch batch,float delta)
     {
         stateTime += delta;
@@ -88,19 +84,6 @@ class TapImp extends GameObject
         score.play(1.0f);
         gameEntry.TAP_AN_IMP_SCORE++;
         popped = false;
-    }
-
-    private void setAnim(String name, int cols, int rows,float time)
-    {
-        idleSheet = new Texture(name);
-        TextureRegion[][] tmp = TextureRegion.split(idleSheet,idleSheet.getWidth()/cols,idleSheet.getHeight()/rows);
-        TextureRegion[] idleFrames = new TextureRegion[cols*rows];
-        int index = 0;
-        for(int i = 0;i<rows;i++)
-            for(int j = 0;j<cols;j++)
-                idleFrames[index++] = tmp[i][j];
-        idleAnim = new Animation<TextureRegion>(time,idleFrames);
-        stateTime = 0f;
     }
 
     void setPopped(boolean popped)
