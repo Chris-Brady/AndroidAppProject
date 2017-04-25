@@ -7,16 +7,17 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class DBManager extends Thread
+class DBManager extends Thread
 {
     private boolean done;
     private String result;
     private String url;
 
-    DBManager()
+    DBManager(String tableName)
     {
         done = false;
-        this.url = "http://industries118.x10host.com/android_api/results.php";
+        this.url = "http://industries118.x10host.com/android_api/results.php?table="
+                +tableName;
     }
 
     DBManager(String name,int score,String tableName)
@@ -26,6 +27,7 @@ public class DBManager extends Thread
                 +tableName+"&name="+name+"&score="+score;
     }
 
+    @Override
     public void run()
     {
         try
@@ -43,15 +45,9 @@ public class DBManager extends Thread
         }
     }
 
-    boolean getStatus()
-    {
-        return done;
-    }
+    boolean getStatus(){return done;}
 
-    public String getInfo()
-    {
-        return result;
-    }
+    String getInfo(){return result;}
 
     private String readStream(InputStream inputStream) {
         try

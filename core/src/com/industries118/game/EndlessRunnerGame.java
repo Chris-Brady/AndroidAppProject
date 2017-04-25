@@ -19,16 +19,16 @@ class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
     private Texture bg;
     private CustomFont mFont;
 
-    private long time;
-    private long timeOffset;
-    private long timePaused;
-    private long last;
-    private Random r;
     private int playerPosition;
+    private Random r;
+    private boolean running;
 
     private Music music;
-    private int dx = 100;
+    private int dx = 128;
     private int d = 0;
+    private int fireballPos = gameEntry.HEIGHT;
+    private int place;
+    private int[] places;
 
     EndlessRunnerGame(final gameEntry game)
     {
@@ -44,130 +44,123 @@ class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
         music.play();
         music.setLooping(true);
         r = new Random();
-        last = System.currentTimeMillis();
+        places = new int[]{r.nextInt(3) + 1, r.nextInt(3) + 1};
         gameObjects.add(new Player(gameEntry.WIDTH/2,50,0.1f));
+        gameObjects.add(new Fireball(0,fireballPos));
+        gameObjects.add(new Fireball(0,fireballPos));
         Gdx.input.setInputProcessor(new GestureDetector(this));
         playerPosition = 2;
-    }
-
-    @Override
-    public void show()
-    {
-
+        place = 0;
+        running = true;
     }
 
     @Override
     public void render(float delta)
     {
-        time = System.currentTimeMillis()-timeOffset;
-        if(d<-gameEntry.HEIGHT)
+        if(running)
         {
-            d = 0;
-            if(dx<800)
-                dx+=10;
-        }
-        else
-            d-=dx*delta;
-        game.setCameraBits();
-        game.batch.begin();
-        game.batch.draw(bg, 0, gameEntry.HEIGHT+d, gameEntry.WIDTH/4, gameEntry.HEIGHT/4);
-        game.batch.draw(bg, 0, d, gameEntry.WIDTH, gameEntry.HEIGHT);
-        for(GameObject g: gameObjects)
-        {
-            if(g instanceof Player)
+            if(fireballPos<-100)
             {
-                g.setX(playerPosition*(gameEntry.WIDTH/4));
+                fireballPos = gameEntry.HEIGHT+100;
+                for(int i = 0; i < places.length;i++)
+                    places[i] = r.nextInt(3)+1;
             }
-            g.draw(game.batch,delta);
+            if(d<-gameEntry.HEIGHT)
+            {
+                d = 0;
+                if(dx<800)
+                    dx+=16;
+            }
+            else
+            {
+                d-=dx*delta;
+                fireballPos -=1.1*(dx*delta);
+            }
+            game.setCameraBits();
+            game.batch.begin();
+            game.batch.draw(bg, 0, gameEntry.HEIGHT+d, gameEntry.WIDTH, gameEntry.HEIGHT);
+            game.batch.draw(bg, 0, d, gameEntry.WIDTH, gameEntry.HEIGHT);
+            for(GameObject g: gameObjects)
+            {
+                if(g instanceof Fireball)
+                {
+                    g.setX((places[(place++)%places.length])*(gameEntry.WIDTH/4));
+                    g.setY(fireballPos);
+                }
+                if(g instanceof Player)
+                {
+                    g.setX(playerPosition*(gameEntry.WIDTH/4));
+                    if((fireballPos<=g.getY()+(g.getHeight()/2)&&fireballPos>g.getY())&&(playerPosition==places[0]||playerPosition==places[1]))
+                    {
+                        running = false;
+                        game.setScreen(new LeaderBoard(game,(int)gameEntry.ENDLESS_RUNNER_SCORE/100,1));
+                        dispose();
+                    }
+                }
+                g.draw(game.batch,delta);
+            }
+            mFont.draw(game.batch,"Score: "+(int)gameEntry.ENDLESS_RUNNER_SCORE/100,(gameEntry.WIDTH/2)-(mFont.getWidth()/2),gameEntry.HEIGHT-60);
+            game.batch.end();
+            gameEntry.ENDLESS_RUNNER_SCORE+=(dx/100);
         }
-        game.batch.end();
     }
 
     @Override
-    public void resize(int width, int height) {
-
-    }
+    public void pause(){}
 
     @Override
-    public void pause()
-    {
-        timePaused = System.currentTimeMillis();
-    }
-
-    @Override
-    public void resume() {
-        timeOffset += System.currentTimeMillis()-timePaused;
-    }
-
-    @Override
-    public void hide() {
-
-    }
+    public void resume(){}
 
     @Override
     public void dispose()
     {
         bg.dispose();
         music.dispose();
-    }
-
-    @Override
-    public boolean touchDown(float x, float y, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean tap(float x, float y, int count, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean longPress(float x, float y) {
-        return false;
+        mFont.dispose();
     }
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button)
     {
         if(Math.abs(velocityX)>Math.abs(velocityY)){
-            if(velocityX>0)
-            {
-               Gdx.app.log("Swipe","Right");
-                if(playerPosition<3)
-                    playerPosition++;
-            }
-            else
-            {
-                Gdx.app.log("Swipe","Left");
-                if(playerPosition>1)
-                    playerPosition--;
-            }
+            if(velocityX>0&&playerPosition<3)
+                playerPosition++;
+            else if(velocityX<0&&playerPosition>1)
+                playerPosition--;
         }
         return false;
     }
 
     @Override
-    public boolean pan(float x, float y, float deltaX, float deltaY) {
-        return false;
-    }
+    public void show(){/*Unused implement method*/}
 
     @Override
-    public boolean panStop(float x, float y, int pointer, int button) {
-        return false;
-    }
+    public void resize(int width, int height){/*Unused implement method*/}
 
     @Override
-    public boolean zoom(float initialDistance, float distance) {
-        return false;
-    }
+    public void hide(){/*Unused implement method*/}
 
     @Override
-    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-        return false;
-    }
+    public boolean touchDown(float x, float y, int pointer, int button) {return false;}
 
     @Override
-    public void pinchStop() {
+    public boolean tap(float x, float y, int count, int button) {return false;}
 
-    }
+    @Override
+    public boolean longPress(float x, float y) {return false;}
+
+    @Override
+    public boolean pan(float x, float y, float deltaX, float deltaY){return false;}
+
+    @Override
+    public boolean panStop(float x, float y, int pointer, int button){return false;}
+
+    @Override
+    public boolean zoom(float initialDistance, float distance){return false;}
+
+    @Override
+    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2){return false;}
+
+    @Override
+    public void pinchStop(){/*Unused implement method*/}
 }

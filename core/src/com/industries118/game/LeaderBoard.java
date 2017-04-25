@@ -23,7 +23,7 @@ class LeaderBoard implements Screen
     private TextField tf;
     private Texture bg;
 
-    LeaderBoard(final gameEntry game, final int score, final String tableName)
+    LeaderBoard(final gameEntry game, final int score, final int state)
     {
         this.game = game;
         this.score = score;
@@ -51,27 +51,20 @@ class LeaderBoard implements Screen
             @Override
             public void clicked(InputEvent e, float x, float y)
             {
-                if(tf.getText().length()>2)
+                if(tf.getText().length()>2&&tf.getText().length()<17)
                 {
                     tf.getOnscreenKeyboard().show(false);
-                    game.setScreen(new LeaderboardDisplay(game,score,tableName,tf.getText()));
+                    game.setScreen(new LeaderboardDisplay(game,score,tf.getText(),state));
                     dispose();
                 }
                 else
                 {
-                    game.ar.toast("At least three characters please!");
+                    game.ar.toast("Between three and sixteen characters please!");
                 }
             }
         });
-
         stage.addActor(tb);
         stage.addActor(tf);
-    }
-
-    @Override
-    public void show()
-    {
-
     }
 
     @Override
@@ -85,41 +78,6 @@ class LeaderBoard implements Screen
         sFont.draw(stage.getBatch(),"Score: "+score,(gameEntry.WIDTH/2)-(sFont.getWidth()/2),500);
         stage.getBatch().end();
         stage.draw();
-
-
-        /*game.batch.begin();
-        if(gameOverScreen)
-        {
-            game.batch.draw(bg,0,0,gameEntry.WIDTH,gameEntry.HEIGHT);
-            mFont.draw(game.batch,"GAME OVER",(gameEntry.WIDTH/2)-(mFont.getWidth()/2),600);
-            sFont.draw(game.batch,"Score: "+scoreToAdd,(gameEntry.WIDTH/2)-(sFont.getWidth()/2),500);
-        }
-        game.batch.end();*/
-
-    }
-
-    @Override
-    public void resize(int width, int height)
-    {
-
-    }
-
-    @Override
-    public void pause()
-    {
-
-    }
-
-    @Override
-    public void resume()
-    {
-
-    }
-
-    @Override
-    public void hide()
-    {
-
     }
 
     @Override
@@ -130,4 +88,19 @@ class LeaderBoard implements Screen
         mFont.dispose();
         sFont.dispose();
     }
+
+    @Override
+    public void show(){/*Unused implement method*/}
+
+    @Override
+    public void resize(int width, int height){/*Unused implement method*/}
+
+    @Override
+    public void pause(){/*Unused implement method*/}
+
+    @Override
+    public void resume(){/*Unused implement method*/}
+
+    @Override
+    public void hide(){/*Unused implement method*/}
 }

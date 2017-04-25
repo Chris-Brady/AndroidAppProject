@@ -57,15 +57,25 @@ class MainMenu implements Screen
             }
         });
 
+        TextButton tb3 = new TextButton("Leaderboard", skin);
+        tb3.setSize(300,30);
+        tb3.setPosition((gameEntry.WIDTH/2-(tb3.getWidth()/2)),(gameEntry.HEIGHT/2)-180);
+        tb3.addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent e, float x, float y)
+            {
+                processInput(3);
+            }
+        });
+
         stage.addActor(tb1);
         stage.addActor(tb2);
+        stage.addActor(tb3);
     }
 
     @Override
-    public void show()
-    {
-
-    }
+    public void show(){}
 
     @Override
     public void render(float delta)
@@ -79,10 +89,7 @@ class MainMenu implements Screen
     }
 
     @Override
-    public void resize(int width, int height)
-    {
-
-    }
+    public void resize(int width, int height){}
 
     @Override
     public void pause()
@@ -120,6 +127,9 @@ class MainMenu implements Screen
                 break;
             case 2:
                 game.setScreen(new SplashScreen("taisplash.png",new EndlessRunnerGame(game),game));
+                break;
+            case 3:
+                game.setScreen(new LeaderboardDisplay(game));
                 break;
         }
         dispose();

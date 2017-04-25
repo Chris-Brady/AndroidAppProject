@@ -7,9 +7,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 class GameObject
 {
     private float x,y;
+    private float height, width;
     Animation<TextureRegion> idleAnim;
     Texture idleSheet;
     float stateTime;
+
 
     GameObject(float x, float y)
     {
@@ -24,7 +26,9 @@ class GameObject
 
     void draw(SpriteBatch batch, float delta)
     {
-
+        stateTime += delta;
+        TextureRegion currentFrame = idleAnim.getKeyFrame(stateTime, true);
+        batch.draw(currentFrame,getX()-width/2,getY()-height/2,width,height);
     }
 
     float getX()
@@ -46,6 +50,15 @@ class GameObject
     {
         this.y = y;
     }
+
+    public float getHeight() {return height;}
+
+    public void setHeight(float length) {this.height = length;}
+
+    public float getWidth() {return width;}
+
+    public void setWidth(float width) {this.width = width;}
+
 
     void setAnim(String name, int cols, int rows,float time)
     {

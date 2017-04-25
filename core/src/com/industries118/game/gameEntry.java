@@ -12,7 +12,7 @@ class gameEntry extends Game
     SpriteBatch batch;
     OrthographicCamera camera;
     static int TAP_AN_IMP_SCORE;
-    static int ENDLESS_RUNNER_SCORE;
+    static float ENDLESS_RUNNER_SCORE;
     static final int WIDTH = 400, HEIGHT = 800;
     ActionResolver ar;
 

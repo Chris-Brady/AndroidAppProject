@@ -77,7 +77,8 @@ class TapImpGame implements Screen
 					{
 						touchInput = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 						game.camera.unproject(touchInput);
-						((TapImp) g).touchUpdate(touchInput);
+						((TapImp) g).touchUpdate(touchInput, time);
+						((TapImp) g).setSpeed(((TapImp) g).getSpeed()-1f);
 					}
 				g.draw(game.batch, delta);
 			}
@@ -85,17 +86,11 @@ class TapImpGame implements Screen
 		}
 		else if(timeLeft<=0)
 		{
-			game.setScreen(new LeaderBoard(game, gameEntry.TAP_AN_IMP_SCORE, "arcadeTAI"));
+			game.setScreen(new LeaderBoard(game, gameEntry.TAP_AN_IMP_SCORE, 0));
 			dispose();
 		}
 		if(timeLeft<=5&&music.isPlaying()&&music.getVolume()>0)
 			music.setVolume(music.getVolume()-delta*0.1f);
-	}
-
-	@Override
-	public void resize(int width, int height)
-	{
-
 	}
 
 	@Override
@@ -133,6 +128,9 @@ class TapImpGame implements Screen
 		for(GameObject g:gameObjects)
 			g.dispose();
 	}
+
+	@Override
+	public void resize(int width, int height) {/*Unused implement method*/}
 
 	private void createImpArray(ArrayList<GameObject> a, int w, int h, int r, int c)
 	{
