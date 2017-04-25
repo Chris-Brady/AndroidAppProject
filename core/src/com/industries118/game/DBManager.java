@@ -42,6 +42,7 @@ class DBManager extends Thread
         catch (Exception e)
         {
             result = "[{\"Name\":\"No Results\",\"Score\":\"0\",\"Date\":\"null\"}]";
+            done = true;
         }
     }
 
