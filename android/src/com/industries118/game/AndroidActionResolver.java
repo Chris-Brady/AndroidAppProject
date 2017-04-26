@@ -23,7 +23,6 @@ public class AndroidActionResolver implements ActionResolver
             @Override
             public void run(){
                 Toast.makeText(c,txt,Toast.LENGTH_SHORT).show();
-
             }
         });
     }
