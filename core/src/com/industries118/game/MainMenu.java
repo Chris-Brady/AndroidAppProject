@@ -14,28 +14,28 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 class MainMenu implements Screen
 {
-    final gameEntry game;
+    final GameEntry game;
     private Texture bg;
     private Music music;
     private Stage stage;
 
-    MainMenu(final gameEntry game)
+    MainMenu(final GameEntry game)
     {
         this.game = game;
         game.camera = new OrthographicCamera();
-        game.camera.setToOrtho(false,gameEntry.WIDTH,gameEntry.HEIGHT);
+        game.camera.setToOrtho(false, GameEntry.WIDTH, GameEntry.HEIGHT);
         music = Gdx.audio.newMusic(Gdx.files.internal("sfx/boomrock.ogg"));
         music.play();
         music.setLooping(true);
         bg = new Texture("boomarcade.png");
 
-        stage = new Stage(new StretchViewport(gameEntry.WIDTH,gameEntry.HEIGHT,game.camera));
+        stage = new Stage(new StretchViewport(GameEntry.WIDTH, GameEntry.HEIGHT,game.camera));
         Gdx.input.setInputProcessor(stage);
         Skin skin = new Skin(Gdx.files.internal("layouts/uiskin.json"));
 
         TextButton tb1 = new TextButton("Tap An Imp!", skin);
         tb1.setSize(300,30);
-        tb1.setPosition((gameEntry.WIDTH/2-(tb1.getWidth()/2)),(gameEntry.HEIGHT/2)-60);
+        tb1.setPosition((GameEntry.WIDTH/2-(tb1.getWidth()/2)),(GameEntry.HEIGHT/2)-60);
         tb1.addListener(new ClickListener()
         {
             @Override
@@ -47,7 +47,7 @@ class MainMenu implements Screen
 
         TextButton tb2 = new TextButton("Hell Runner!", skin);
         tb2.setSize(300,30);
-        tb2.setPosition((gameEntry.WIDTH/2-(tb2.getWidth()/2)),(gameEntry.HEIGHT/2)-120);
+        tb2.setPosition((GameEntry.WIDTH/2-(tb2.getWidth()/2)),(GameEntry.HEIGHT/2)-120);
         tb2.addListener(new ClickListener()
         {
             @Override
@@ -59,7 +59,7 @@ class MainMenu implements Screen
 
         TextButton tb3 = new TextButton("Leaderboard", skin);
         tb3.setSize(300,30);
-        tb3.setPosition((gameEntry.WIDTH/2-(tb3.getWidth()/2)),(gameEntry.HEIGHT/2)-180);
+        tb3.setPosition((GameEntry.WIDTH/2-(tb3.getWidth()/2)),(GameEntry.HEIGHT/2)-180);
         tb3.addListener(new ClickListener()
         {
             @Override
@@ -83,7 +83,7 @@ class MainMenu implements Screen
         game.setCameraBits();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.getBatch().begin();
-        stage.getBatch().draw(bg,0,0,gameEntry.WIDTH,gameEntry.HEIGHT);
+        stage.getBatch().draw(bg,0,0, GameEntry.WIDTH, GameEntry.HEIGHT);
         stage.getBatch().end();
         stage.draw();
     }

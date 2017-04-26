@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 class SplashScreen implements Screen
 {
     private Texture splash;
-    private gameEntry game;
+    private GameEntry game;
     private Screen next;
 
-    SplashScreen(String image, Screen goTo, final gameEntry game)
+    SplashScreen(String image, Screen goTo, final GameEntry game)
     {
         splash = new Texture(image);
         this.game = game;
@@ -22,7 +22,7 @@ class SplashScreen implements Screen
     {
         game.setCameraBits();
         game.batch.begin();
-        game.batch.draw(splash,0,0,gameEntry.WIDTH,gameEntry.HEIGHT);
+        game.batch.draw(splash,0,0, GameEntry.WIDTH, GameEntry.HEIGHT);
         game.batch.end();
         if(Gdx.input.isTouched())
         {

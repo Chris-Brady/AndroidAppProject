@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 class LeaderBoard implements Screen
 {
-    private gameEntry game;
+    private GameEntry game;
     private CustomFont mFont,sFont;
     private int score;
     //UI
@@ -23,30 +23,30 @@ class LeaderBoard implements Screen
     private TextField tf;
     private Texture bg;
 
-    LeaderBoard(final gameEntry game, final int score, final int state)
+    LeaderBoard(final GameEntry game, final int score, final int state)
     {
         this.game = game;
         this.score = score;
         game.camera = new OrthographicCamera();
-        game.camera.setToOrtho(false,gameEntry.WIDTH,gameEntry.HEIGHT);
+        game.camera.setToOrtho(false, GameEntry.WIDTH, GameEntry.HEIGHT);
         mFont = new CustomFont("BLOODY.TTF",40, Color.YELLOW);
         sFont = new CustomFont("BLOODY.TTF",24, Color.YELLOW);
         bg = new Texture("star.png");
 
         //UI
-        stage = new Stage(new StretchViewport(gameEntry.WIDTH,gameEntry.HEIGHT,game.camera));
+        stage = new Stage(new StretchViewport(GameEntry.WIDTH, GameEntry.HEIGHT,game.camera));
         Gdx.input.setInputProcessor(stage);
         Skin skin = new Skin(Gdx.files.internal("layouts/uiskin.json"));
 
         tf = new TextField("", skin);
         tf.setSize(300,40);
-        tf.setPosition((gameEntry.WIDTH/2-(tf.getWidth()/2)),gameEntry.HEIGHT/2);
+        tf.setPosition((GameEntry.WIDTH/2-(tf.getWidth()/2)), GameEntry.HEIGHT/2);
         stage.setKeyboardFocus(tf);
         tf.getOnscreenKeyboard().show(true);
 
         TextButton tb = new TextButton("Upload Score!", skin);
         tb.setSize(300,30);
-        tb.setPosition((gameEntry.WIDTH/2-(tb.getWidth()/2)),gameEntry.HEIGHT/2-(tf.getHeight()*2));
+        tb.setPosition((GameEntry.WIDTH/2-(tb.getWidth()/2)), GameEntry.HEIGHT/2-(tf.getHeight()*2));
         tb.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent e, float x, float y)
@@ -73,9 +73,9 @@ class LeaderBoard implements Screen
         game.setCameraBits();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.getBatch().begin();
-        stage.getBatch().draw(bg,0,0,gameEntry.WIDTH,gameEntry.HEIGHT);
-        mFont.draw(stage.getBatch(),"GAME OVER",(gameEntry.WIDTH/2)-(mFont.getWidth()/2),600);
-        sFont.draw(stage.getBatch(),"Score: "+score,(gameEntry.WIDTH/2)-(sFont.getWidth()/2),500);
+        stage.getBatch().draw(bg,0,0, GameEntry.WIDTH, GameEntry.HEIGHT);
+        mFont.draw(stage.getBatch(),"GAME OVER",(GameEntry.WIDTH/2)-(mFont.getWidth()/2),600);
+        sFont.draw(stage.getBatch(),"Score: "+score,(GameEntry.WIDTH/2)-(sFont.getWidth()/2),500);
         stage.getBatch().end();
         stage.draw();
     }

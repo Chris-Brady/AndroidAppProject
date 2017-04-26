@@ -6,9 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-class gameEntry extends Game
+class GameEntry extends Game
 {
-
     SpriteBatch batch;
     OrthographicCamera camera;
     static int TAP_AN_IMP_SCORE;
@@ -16,7 +15,7 @@ class gameEntry extends Game
     static final int WIDTH = 400, HEIGHT = 800;
     ActionResolver ar;
 
-    gameEntry(ActionResolver ar)
+    GameEntry(ActionResolver ar)
     {
         this.ar = ar;
     }

@@ -41,7 +41,7 @@ class DBManager extends Thread
         }
         catch (Exception e)
         {
-            result = "[{\"Name\":\"No Results\",\"Score\":\"0\",\"Date\":\"null\"}]";
+            result = "[{\"Name\":\"No Results\",\"Score\":\"0\",\"Date\":\"Network\"}]";
             done = true;
         }
     }
@@ -64,7 +64,7 @@ class DBManager extends Thread
         }
         catch (IOException e)
         {
-            return "[{\"Name\":\"No Results\",\"Score\":\"0\",\"Date\":\"null\"}]";
+            return "[{\"Name\":\"No Results\",\"Score\":\"0\",\"Date\":\"IO\"}]";
         }
     }
 }

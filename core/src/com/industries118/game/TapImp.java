@@ -84,7 +84,7 @@ class TapImp extends GameObject
     {
         deathTime = time;               //Set imp death time
         score.play(1.0f);               //Play score blip
-        gameEntry.TAP_AN_IMP_SCORE++;   //Increment game score
+        GameEntry.TAP_AN_IMP_SCORE++;   //Increment game score
         popped = false;                 //Set popped false
     }
     float getSpeed() {return speed;}                    //Set time before imp can re-pop

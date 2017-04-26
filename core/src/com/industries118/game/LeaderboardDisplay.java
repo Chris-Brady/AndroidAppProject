@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 
 class LeaderboardDisplay implements Screen
 {
-    private gameEntry game;
+    private GameEntry game;
     private boolean complete;
     private DBManager downloader;
 
@@ -26,14 +26,14 @@ class LeaderboardDisplay implements Screen
     private String[] tableNames = {"TapAnImp","InfiniteRunner"};
     private int state;
 
-    LeaderboardDisplay(final gameEntry game)
+    LeaderboardDisplay(final GameEntry game)
     {
         this(game,0);
         downloader = new DBManager(tableNames[state]);
         downloader.start();
     }
 
-    private LeaderboardDisplay(final gameEntry game, int state)
+    private LeaderboardDisplay(final GameEntry game, int state)
     {
         this.game = game;
         this.state = state;
@@ -42,7 +42,7 @@ class LeaderboardDisplay implements Screen
         makeButtons();
     }
 
-    LeaderboardDisplay(final gameEntry game, int score,String name,int state)
+    LeaderboardDisplay(final GameEntry game, int score, String name, int state)
     {
         this(game, state);
         downloader = new DBManager(name,score,tableNames[state]);
@@ -83,7 +83,7 @@ class LeaderboardDisplay implements Screen
 
     private void makeStage()
     {
-        stage = new Stage(new StretchViewport(gameEntry.WIDTH,gameEntry.HEIGHT,game.camera));
+        stage = new Stage(new StretchViewport(GameEntry.WIDTH, GameEntry.HEIGHT,game.camera));
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("layouts/uiskin.json"));
     }
@@ -92,7 +92,7 @@ class LeaderboardDisplay implements Screen
     {
         table = new Table(skin);
         ScrollPane pane = new ScrollPane(table, skin);
-        pane.setBounds(0,0,gameEntry.WIDTH,gameEntry.HEIGHT-150);
+        pane.setBounds(0,0, GameEntry.WIDTH, GameEntry.HEIGHT-150);
         pane.setPosition(0,100);
         pane.setColor(0,0,0,1);
 
@@ -119,7 +119,7 @@ class LeaderboardDisplay implements Screen
     {
         TextButton tb = new TextButton("Main Menu", skin);
         tb.setSize(300,30);
-        tb.setPosition((gameEntry.WIDTH/2-(tb.getWidth()/2)),50);
+        tb.setPosition((GameEntry.WIDTH/2-(tb.getWidth()/2)),50);
         tb.addListener(new ClickListener()
         {
             @Override
@@ -132,7 +132,7 @@ class LeaderboardDisplay implements Screen
 
         final TextButton sb = new TextButton("Switch Leaderboard", skin);
         sb.setSize(300,30);
-        sb.setPosition((gameEntry.WIDTH/2-(sb.getWidth()/2)),gameEntry.HEIGHT-50);
+        sb.setPosition((GameEntry.WIDTH/2-(sb.getWidth()/2)), GameEntry.HEIGHT-50);
         sb.addListener(new ClickListener()
         {
             @Override

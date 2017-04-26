@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 class TapImpGame implements Screen
 {
-	private gameEntry game;
+	private GameEntry game;
 	private ArrayList<GameObject> gameObjects;
 	private Vector3 touchInput;
 	private Texture bg;
@@ -26,12 +26,12 @@ class TapImpGame implements Screen
 	private long timeOffset;
 	private long timePaused;
 
-	TapImpGame(final gameEntry game)
+	TapImpGame(final GameEntry game)
 	{
 		this.game = game;
-		gameEntry.TAP_AN_IMP_SCORE = 0;
+		GameEntry.TAP_AN_IMP_SCORE = 0;
 		game.camera = new OrthographicCamera();
-		game.camera.setToOrtho(false,gameEntry.WIDTH,gameEntry.HEIGHT);
+		game.camera.setToOrtho(false, GameEntry.WIDTH, GameEntry.HEIGHT);
 		gameObjects = new ArrayList<GameObject>();
 		touchInput = new Vector3(0,0,0);
 		mFont = new CustomFont("BLOODY.TTF",24, Color.YELLOW);
@@ -40,7 +40,7 @@ class TapImpGame implements Screen
 		music = Gdx.audio.newMusic(Gdx.files.internal("sfx/headshredder.ogg"));
 		music.play();
 		music.setLooping(true);
-		createImpArray(gameObjects,gameEntry.WIDTH, gameEntry.HEIGHT, 3,3);
+		createImpArray(gameObjects, GameEntry.WIDTH, GameEntry.HEIGHT, 3,3);
 		time = 0;
 		timeLeft = 30000;
 		timeOffset = 0;
@@ -64,9 +64,9 @@ class TapImpGame implements Screen
 			timeLeft = 30 - (int) (time - startTime) / 1000;
 			game.setCameraBits();
 			game.batch.begin();
-			game.batch.draw(bg, 0, 0, gameEntry.WIDTH, gameEntry.HEIGHT);
-			mFont.draw(game.batch,"Score: "+gameEntry.TAP_AN_IMP_SCORE,(gameEntry.WIDTH/2)-(mFont.getWidth()/2),gameEntry.HEIGHT-60);
-			sFont.draw(game.batch,"Time: "+(timeLeft),(gameEntry.WIDTH/2)-(sFont.getWidth()/2),gameEntry.HEIGHT-24);
+			game.batch.draw(bg, 0, 0, GameEntry.WIDTH, GameEntry.HEIGHT);
+			mFont.draw(game.batch,"Score: "+ GameEntry.TAP_AN_IMP_SCORE,(GameEntry.WIDTH/2)-(mFont.getWidth()/2), GameEntry.HEIGHT-60);
+			sFont.draw(game.batch,"Time: "+(timeLeft),(GameEntry.WIDTH/2)-(sFont.getWidth()/2), GameEntry.HEIGHT-24);
 
 
 			for (GameObject g : gameObjects)
@@ -86,7 +86,7 @@ class TapImpGame implements Screen
 		}
 		else if(timeLeft<=0)
 		{
-			game.setScreen(new LeaderBoard(game, gameEntry.TAP_AN_IMP_SCORE, 0));
+			game.setScreen(new LeaderBoard(game, GameEntry.TAP_AN_IMP_SCORE, 0));
 			dispose();
 		}
 		if(timeLeft<=5&&music.isPlaying()&&music.getVolume()>0)

@@ -14,7 +14,7 @@ import java.util.Random;
 
 class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
 {
-    private gameEntry game;
+    private GameEntry game;
     private ArrayList<GameObject> gameObjects;
     private Texture bg;
     private CustomFont mFont;
@@ -26,16 +26,16 @@ class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
     private Music music;
     private int dx = 128;
     private int d = 0;
-    private int fireballPos = gameEntry.HEIGHT;
+    private int fireballPos = GameEntry.HEIGHT;
     private int place;
     private int[] places;
 
-    EndlessRunnerGame(final gameEntry game)
+    EndlessRunnerGame(final GameEntry game)
     {
         this.game = game;
-        gameEntry.ENDLESS_RUNNER_SCORE = 0;
+        GameEntry.ENDLESS_RUNNER_SCORE = 0;
         game.camera = new OrthographicCamera();
-        game.camera.setToOrtho(false,gameEntry.WIDTH,gameEntry.HEIGHT);
+        game.camera.setToOrtho(false, GameEntry.WIDTH, GameEntry.HEIGHT);
         gameObjects = new ArrayList<GameObject>();
         mFont = new CustomFont("BLOODY.TTF",24, Color.YELLOW);
         bg = new Texture("floortile.png");
@@ -45,7 +45,7 @@ class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
         music.setLooping(true);
         r = new Random();
         places = new int[]{r.nextInt(3) + 1, r.nextInt(3) + 1};
-        gameObjects.add(new Player(gameEntry.WIDTH/2,50,0.1f));
+        gameObjects.add(new Player(GameEntry.WIDTH/2,50,0.1f));
         gameObjects.add(new Fireball(0,fireballPos));
         gameObjects.add(new Fireball(0,fireballPos));
         Gdx.input.setInputProcessor(new GestureDetector(this));
@@ -61,11 +61,11 @@ class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
         {
             if(fireballPos<-100)
             {
-                fireballPos = gameEntry.HEIGHT+100;
+                fireballPos = GameEntry.HEIGHT+100;
                 for(int i = 0; i < places.length;i++)
                     places[i] = r.nextInt(3)+1;
             }
-            if(d<-gameEntry.HEIGHT)
+            if(d<-GameEntry.HEIGHT)
             {
                 d = 0;
                 if(dx<800)
@@ -78,30 +78,30 @@ class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
             }
             game.setCameraBits();
             game.batch.begin();
-            game.batch.draw(bg, 0, gameEntry.HEIGHT+d, gameEntry.WIDTH, gameEntry.HEIGHT);
-            game.batch.draw(bg, 0, d, gameEntry.WIDTH, gameEntry.HEIGHT);
+            game.batch.draw(bg, 0, GameEntry.HEIGHT+d, GameEntry.WIDTH, GameEntry.HEIGHT);
+            game.batch.draw(bg, 0, d, GameEntry.WIDTH, GameEntry.HEIGHT);
             for(GameObject g: gameObjects)
             {
                 if(g instanceof Fireball)
                 {
-                    g.setX((places[(place++)%places.length])*(gameEntry.WIDTH/4));
+                    g.setX((places[(place++)%places.length])*(GameEntry.WIDTH/4));
                     g.setY(fireballPos);
                 }
                 if(g instanceof Player)
                 {
-                    g.setX(playerPosition*(gameEntry.WIDTH/4));
+                    g.setX(playerPosition*(GameEntry.WIDTH/4));
                     if((fireballPos<=g.getY()+(g.getHeight()/2)&&fireballPos>g.getY())&&(playerPosition==places[0]||playerPosition==places[1]))
                     {
                         running = false;
-                        game.setScreen(new LeaderBoard(game,(int)gameEntry.ENDLESS_RUNNER_SCORE/100,1));
+                        game.setScreen(new LeaderBoard(game,(int) GameEntry.ENDLESS_RUNNER_SCORE/100,1));
                         dispose();
                     }
                 }
                 g.draw(game.batch,delta);
             }
-            mFont.draw(game.batch,"Score: "+(int)gameEntry.ENDLESS_RUNNER_SCORE/100,(gameEntry.WIDTH/2)-(mFont.getWidth()/2),gameEntry.HEIGHT-60);
+            mFont.draw(game.batch,"Score: "+(int) GameEntry.ENDLESS_RUNNER_SCORE/100,(GameEntry.WIDTH/2)-(mFont.getWidth()/2), GameEntry.HEIGHT-60);
             game.batch.end();
-            gameEntry.ENDLESS_RUNNER_SCORE+=(dx/100);
+            GameEntry.ENDLESS_RUNNER_SCORE+=(dx/100);
         }
     }
 
@@ -117,6 +117,8 @@ class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
         bg.dispose();
         music.dispose();
         mFont.dispose();
+        for(GameObject g : gameObjects)
+            g.dispose();
     }
 
     @Override
