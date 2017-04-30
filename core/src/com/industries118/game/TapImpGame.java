@@ -10,22 +10,24 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
+//Screen fpr Tap An Imp Game
 class TapImpGame implements Screen
 {
-	private GameEntry game;
-	private ArrayList<GameObject> gameObjects;
-	private Vector3 touchInput;
-	private Texture bg;
-	private CustomFont mFont,sFont;
-	private Music music;
+	private GameEntry game;						//Variable to store GameEntry for access
+	private ArrayList<GameObject> gameObjects;	//ArrayList of GameObjects
+	private Vector3 touchInput;					//Vector storing x,y,z of touch location
+	private Texture bg;							//Background texture
+	private CustomFont mFont,sFont;				//Fonts for score and time remaining
+	private Music music;						//LibGdx Music Object
 
-	private boolean running;
-	private int timeLeft;
-	private long time;
-	private long startTime;
-	private long timeOffset;
-	private long timePaused;
+	private boolean running;					//True if game is not paused
+	private int timeLeft;						//Time left
+	private long time;							//Current time
+	private long startTime;						//Time Game was started at
+	private long timeOffset;					//Time elapsed while game has been paused
+	private long timePaused;					//Time game was paused at
 
+	//Constructor
 	TapImpGame(final GameEntry game)
 	{
 		this.game = game;
@@ -47,6 +49,7 @@ class TapImpGame implements Screen
 		running = false;
 	}
 
+	//Called when Screen comes into view
 	@Override
 	public void show ()
 	{
@@ -54,6 +57,7 @@ class TapImpGame implements Screen
 		running = true;
 	}
 
+	//Called 30 or 60 times a second
 	@Override
 	public void render (float delta)
 	{
@@ -93,6 +97,7 @@ class TapImpGame implements Screen
 			music.setVolume(music.getVolume()-delta*0.1f);
 	}
 
+	//Called when Screen loses focus
 	@Override
 	public void pause()
 	{
@@ -104,6 +109,7 @@ class TapImpGame implements Screen
 		}
 	}
 
+	//Called after Screen regains focus
 	@Override
 	public void resume()
 	{
@@ -112,12 +118,14 @@ class TapImpGame implements Screen
 		music.play();
 	}
 
+	//Called before screen loses focus
 	@Override
 	public void hide()
 	{
 		music.stop();
 	}
 
+	//Called when switching Screens
 	@Override
 	public void dispose ()
 	{
@@ -132,6 +140,7 @@ class TapImpGame implements Screen
 	@Override
 	public void resize(int width, int height) {/*Unused implement method*/}
 
+	//Creates a grid of TapImp Objects
 	private void createImpArray(ArrayList<GameObject> a, int w, int h, int r, int c)
 	{
 		int wSpace = w/r;

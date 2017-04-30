@@ -13,16 +13,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+//Screen for entering name and showing score to prepare for upload
 class LeaderBoard implements Screen
 {
-    private GameEntry game;
-    private CustomFont mFont,sFont;
-    private int score;
-    //UI
-    private Stage stage;
-    private TextField tf;
-    private Texture bg;
+    private GameEntry game;         //Variable to store GameEntry for access
+    private CustomFont mFont,sFont; //Custom Fonts for text
+    private int score;              //Score to Upload
 
+    private Stage stage;            //LibGdx Stage object to organise buttons and other UI elements
+    private TextField tf;           //TextField to enter name
+    private Texture bg;             //Background texture
+
+    //Constructor
     LeaderBoard(final GameEntry game, final int score, final int state)
     {
         this.game = game;
@@ -47,6 +49,7 @@ class LeaderBoard implements Screen
         TextButton tb = new TextButton("Upload Score!", skin);
         tb.setSize(300,30);
         tb.setPosition((GameEntry.WIDTH/2-(tb.getWidth()/2)), GameEntry.HEIGHT/2-(tf.getHeight()*2));
+        //Button to submit and check name in TextField
         tb.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent e, float x, float y)
@@ -59,6 +62,7 @@ class LeaderBoard implements Screen
                 }
                 else
                 {
+                    //Toast usage example
                     game.ar.toast("Between three and sixteen characters please!");
                 }
             }
@@ -67,6 +71,7 @@ class LeaderBoard implements Screen
         stage.addActor(tf);
     }
 
+    //Called 30 or 60 times every second
     @Override
     public void render(float delta)
     {
@@ -80,6 +85,7 @@ class LeaderBoard implements Screen
         stage.draw();
     }
 
+    //Called when Screen is switched, disposes all disposables
     @Override
     public void dispose()
     {

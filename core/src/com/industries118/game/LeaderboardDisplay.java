@@ -13,19 +13,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.google.gson.Gson;
 
+//Screen class to fetch and display the leaderboard
 class LeaderboardDisplay implements Screen
 {
-    private GameEntry game;
-    private boolean complete;
-    private DBManager downloader;
+    private GameEntry game;         //Variable to store GameEntry for access
+    private boolean complete;       //False if DBManager is not done
+    private DBManager downloader;   //DBManager to retrieve data from online Database
 
-    //UI
-    private Stage stage;
-    private Table table;
-    private Skin skin;
-    private String[] tableNames = {"TapAnImp","InfiniteRunner"};
-    private int state;
+    private Stage stage;            //LibGdx Stage Object to organize buttons and other UI elements
+    private Table table;            //LibGdx Table to arrange Scores
+    private Skin skin;              //LibGdx Skin for UI
+    private String[] tableNames = {"TapAnImp","InfiniteRunner"};    //Database table names
+    private int state;              //Used to determine which game the user has just played
 
+    //Constructor to display Scores
     LeaderboardDisplay(final GameEntry game)
     {
         this(game,0);
@@ -33,6 +34,7 @@ class LeaderboardDisplay implements Screen
         downloader.start();
     }
 
+    //Constructor to initialise stuff
     private LeaderboardDisplay(final GameEntry game, int state)
     {
         this.game = game;
@@ -42,6 +44,7 @@ class LeaderboardDisplay implements Screen
         makeButtons();
     }
 
+    //Constructor to upload and display scores
     LeaderboardDisplay(final GameEntry game, int score, String name, int state)
     {
         this(game, state);
@@ -49,6 +52,7 @@ class LeaderboardDisplay implements Screen
         downloader.start();
     }
 
+    //Called 30 or 60 times a second
     @Override
     public void render(float delta)
     {
@@ -81,6 +85,7 @@ class LeaderboardDisplay implements Screen
         stage.draw();
     }
 
+    //Initialise the stage
     private void makeStage()
     {
         stage = new Stage(new StretchViewport(GameEntry.WIDTH, GameEntry.HEIGHT,game.camera));
@@ -88,6 +93,7 @@ class LeaderboardDisplay implements Screen
         skin = new Skin(Gdx.files.internal("layouts/uiskin.json"));
     }
 
+    //Fill stage with Objects
     private void fillStage()
     {
         table = new Table(skin);
@@ -115,6 +121,7 @@ class LeaderboardDisplay implements Screen
         stage.addActor(pane);
     }
 
+    //Create the buttons
     private void makeButtons()
     {
         TextButton tb = new TextButton("Main Menu", skin);
@@ -149,6 +156,7 @@ class LeaderboardDisplay implements Screen
         stage.addActor(sb);
     }
 
+    //Called when Screen is switched, disposes all disposables
     @Override
     public void dispose()
     {

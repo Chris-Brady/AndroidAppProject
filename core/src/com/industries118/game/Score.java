@@ -1,11 +1,13 @@
 package com.industries118.game;
 
+//Class to store JSON data as a single score Object
 class Score
 {
-    private String Name;
-    private String Score;
-    private String Date;
+    private String Name;       //Name associated with a score
+    private String Score;      //Score
+    private String Date;       //Date Associated with a score
 
+    //Constructor
     public Score(String name, String score,String date)
     {
         this.Name = name;
@@ -13,16 +15,12 @@ class Score
         this.Date = date;
     }
 
-    public String getName()
-    {
-        return this.Name;
-    }
-    public String getScore()
-    {
-        return this.Score;
-    }
-    public String getDate()
-    {
-        return this.Date;
-    }
+    //Get Name
+    String getName(){return this.Name;}
+
+    //Get Score
+    String getScore(){return this.Score;}
+
+    //Get Date
+    String getDate(){return this.Date;}
 }

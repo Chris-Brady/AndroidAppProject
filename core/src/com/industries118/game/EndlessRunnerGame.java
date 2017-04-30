@@ -12,24 +12,26 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.Random;
 
+//Endless Runner Screen class
 class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
 {
-    private GameEntry game;
-    private ArrayList<GameObject> gameObjects;
-    private Texture bg;
-    private CustomFont mFont;
+    private GameEntry game;                     //Variable to store GameEntry for access
+    private ArrayList<GameObject> gameObjects;  //ArrayList of GameObjects
+    private Texture bg;                         //BackGround Texture
+    private CustomFont mFont;                   //Font for score/distance
 
-    private int playerPosition;
-    private Random r;
-    private boolean running;
+    private int playerPosition;                 //1, 2 or 3 for left, centre and right
+    private Random r;                           //Random num generator
+    private boolean running;                    //True if game is not paused
 
-    private Music music;
-    private int dx = 128;
-    private int d = 0;
-    private int fireballPos = GameEntry.HEIGHT;
-    private int place;
-    private int[] places;
+    private Music music;                        //LibGdx Music variable
+    private int dx = 128;                       //The distance objects get moved each frame
+    private int d = 0;                          //The current distance of bg
+    private int fireballPos = GameEntry.HEIGHT; //Y Position of FireBalls
+    private int place;                          //Variable for random placement of FireBalls
+    private int[] places;                       //Places of the two FireBalls
 
+    //Constructor
     EndlessRunnerGame(final GameEntry game)
     {
         this.game = game;
@@ -54,6 +56,7 @@ class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
         running = true;
     }
 
+    //Called 30 or 60 times every second
     @Override
     public void render(float delta)
     {
@@ -105,12 +108,15 @@ class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
         }
     }
 
+    //Called when game goes out of focus
     @Override
-    public void pause(){}
+    public void pause(){running = false;}
 
+    //Called when game regains focus
     @Override
-    public void resume(){}
+    public void resume(){running = true;}
 
+    //Called when screen is disposed
     @Override
     public void dispose()
     {
@@ -121,6 +127,7 @@ class EndlessRunnerGame implements Screen, GestureDetector.GestureListener
             g.dispose();
     }
 
+    //Called when a fling gesture is detected
     @Override
     public boolean fling(float velocityX, float velocityY, int button)
     {

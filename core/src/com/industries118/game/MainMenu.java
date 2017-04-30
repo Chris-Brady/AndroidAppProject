@@ -12,13 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+//Main Menu Screen, Used to access the rest of the app
 class MainMenu implements Screen
 {
-    final GameEntry game;
-    private Texture bg;
-    private Music music;
-    private Stage stage;
+    final GameEntry game;   //Variable to store GameEntry for access
+    private Texture bg;     //Background Texture
+    private Music music;    //LibGdx Music Object
+    private Stage stage;    //Stage to organize UI elements
 
+    //Constructor
     MainMenu(final GameEntry game)
     {
         this.game = game;
@@ -74,8 +76,6 @@ class MainMenu implements Screen
         stage.addActor(tb3);
     }
 
-    @Override
-    public void show(){}
 
     @Override
     public void render(float delta)
@@ -89,26 +89,21 @@ class MainMenu implements Screen
     }
 
     @Override
-    public void resize(int width, int height){}
-
-    @Override
     public void pause()
     {
         music.pause();
+        game.ar.randomNotification();
     }
 
+    //Called after Screen comes into focus
     @Override
-    public void resume()
-    {
-        music.play();
-    }
+    public void resume(){music.play();}
 
+    //Called before screen goes out of view
     @Override
-    public void hide()
-    {
-        music.stop();
-    }
+    public void hide(){music.stop();}
 
+    //Called when Switching screens, disposes of all disposable Objects
     @Override
     public void dispose()
     {
@@ -117,6 +112,7 @@ class MainMenu implements Screen
         bg.dispose();
     }
 
+    //Process button input
     private void processInput(int id)
     {
         music.stop();
@@ -126,7 +122,7 @@ class MainMenu implements Screen
                 game.setScreen(new SplashScreen("taisplash.png",new TapImpGame(game),game));
                 break;
             case 2:
-                game.setScreen(new SplashScreen("taisplash.png",new EndlessRunnerGame(game),game));
+                game.setScreen(new SplashScreen("irsplash.png",new EndlessRunnerGame(game),game));
                 break;
             case 3:
                 game.setScreen(new LeaderboardDisplay(game));
@@ -134,4 +130,10 @@ class MainMenu implements Screen
         }
         dispose();
     }
+
+    @Override
+    public void resize(int width, int height){/*Unused Implement Method*/}
+
+    @Override
+    public void show(){/*Unused Implement Method*/}
 }

@@ -2,6 +2,7 @@ package com.industries118.game;
 
 class Fireball extends GameObject
 {
+    //Constructor
     Fireball(float x, float y)
     {
         super(x, y);

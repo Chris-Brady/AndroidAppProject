@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.util.Random;
 
+//TapImp Object for tappable imps
 class TapImp extends GameObject
 {
     //GameLogic

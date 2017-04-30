@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
+//Screen to display info about a Game, Also acts as loading screen
 class SplashScreen implements Screen
 {
-    private Texture splash;
-    private GameEntry game;
-    private Screen next;
+    private Texture splash; //Texture to be displayed
+    private GameEntry game; //Variable to store GameEntry for access
+    private Screen next;    //Screen to be displayed next
 
+    //Constructor
     SplashScreen(String image, Screen goTo, final GameEntry game)
     {
         splash = new Texture(image);
@@ -17,6 +19,7 @@ class SplashScreen implements Screen
         next = goTo;
     }
 
+    //Called 30 or 60 times a second
     @Override
     public void render(float delta)
     {
@@ -31,6 +34,7 @@ class SplashScreen implements Screen
         }
     }
 
+    //Called when switching screens
     @Override
     public void dispose(){splash.dispose();}
 
