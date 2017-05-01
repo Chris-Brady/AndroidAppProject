@@ -13,4 +13,4 @@
 
 //Open Project in Android Studio
     Use this file to open a Project
-    Import from GitHub
+    Import from GitHub  https://github.com/Chris-Brady/AndroidAppProject
